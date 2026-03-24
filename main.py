@@ -101,7 +101,12 @@ def main():
     analyzer = WordAnalyzer(
         str(selection) # It would be better just to pass the path object, but for project requirements it needs to be a string
     )
-    analyzer.process_file()
+    
+    if analyzer.process_file():
+        print("successfully file")
+        print(analyzer._word_frequencies)
+    else:
+        print("Failed to analyze file")
     
 
 if __name__ == "__main__":

@@ -22,26 +22,39 @@ class AnalyzationFailedError(Exception):
     pass
 
 class WordAnalyzer():
-    def __init__(self, filepath: str):
+    _translation = str.maketrans("", "", punctuation + '\n')
+    DEFAULT_STOP_WORDS = ['']
+    def __init__(self, filepath: str, stop_words:list=DEFAULT_STOP_WORDS):
         self._word_frequencies = {}
         self._path = Path(filepath)
-    def get_word_frequency(self, word: str):
+        self._stop_words = stop_words
+    def get_word_frequency(self, word: str) -> int:
         return self._word_frequencies.get(word)
-    def count_word(self, word: str):
+    def count_word(self, word: str) -> None:
+        if word in self._stop_words:
+            return
+
         exists = self.get_word_frequency(word)
         if exists:
             self._word_frequencies[word] += 1
         else:
             self._word_frequencies[word] = 1
-    def process_file(self):
+    def _get_words(line: str) -> list[str]:
+        return line.lower().translate(WordAnalyzer._translation).strip().split(' ')
+    def process_file(self) -> bool:
         try:
             if not self._path.exists():
                 raise FileNotFoundError
         except FileNotFoundError:
-            raise AnalyzationFailedError("File path does not exist")
+            return False
 
         with self._path.open("r") as file:
-            pass
+            for line in file:
+                print(WordAnalyzer._get_words(line))
+                for word in WordAnalyzer._get_words(line):
+                    self.count_word(word)
+
+        return True
 
 
 
