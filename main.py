@@ -13,21 +13,6 @@ from WordAnalyzer import WordAnalyzer
 project_dir = Path(__file__).resolve().parent
 document_path = project_dir / "documents"
 
-def display_documents(options: dict[str: Path]):
-    for pos, item in options.items():
-        print(f"{pos}. {item.name()}")
-
-def get_document_option() -> Path:
-    pass
-
-# def verify_paths(document_options: dict[str: Path]):
-#     assert document_path.is_dir(), "Documents path does not exist! Please add a folder called 'documents' inside of the project directory"
-
-#     for pos, option in document_options.items():
-#         assert option.is_file(), f"{option.name()} at position {pos} is not a valid file!"
-    
-#     return True
-
 documents = {
     "1": "file_1.txt",
     "2": "file_2.txt",
@@ -41,19 +26,46 @@ class InvalidDocumentSelectionError(Exception):
         self.pos = invalid_selection_pos
 
 class DocumentOptions:
-    def __init__(self, src_path: Path):
+    """
+    Manages and displays document options
+    """
+    def __init__(self, src_path: Path, options: dict[str: Path]):
         self._options = {}
         self._src_path = src_path
+        self._options = options
     def set_options(self, options: dict[str: Path]):
         self._options = options
     def get_option(self, pos: str):
         opt = self._options.get(pos)
         if opt:
-            return opt
+            return self._get_option_path(opt)
         else:
             raise InvalidDocumentSelectionError(pos)
     def get_options(self):
         return {k:self._get_option_path(v) for k, v in self._options.items()}
+    def select_document(self):
+        document = None
+
+        while document is None:
+            str_option = input(f"Choose document: (1-{len(self.get_options())}): ")
+
+            if str_option == "quit":
+                break
+
+            try:
+                if str_option.isalpha():
+                    raise ValueError()
+                
+                document = self.get_option(str_option)
+                
+            except ValueError:
+                print("Only numerical input is allowed within the specified ranges")
+            except InvalidDocumentSelectionError as e:
+                print(f"No document exists at position: {e.pos}")
+            except KeyboardInterrupt:
+                break
+        
+        return document
     # private
     def _get_option_path(self, option: str):
         return self._src_path / option
@@ -72,38 +84,13 @@ class DocumentOptions:
         out += '\n'.join(option_strings)
         
         return out
-
-def select_document(options: DocumentOptions) -> Path:
-    print(options)
-    
-    document = None
-
-    while document is None:
-        str_option = input(f"Choose document: (1-{len(options.get_options())}): ")
-
-        if str_option == "quit":
-            break
-
-        try:
-            if str_option.isalpha():
-                raise ValueError()
-            
-            document = options.get_option(str_option)
-            
-        except ValueError:
-            print("Only numerical input is allowed within the specified ranges")
-        except InvalidDocumentSelectionError as e:
-            print(f"No document exists at position: {e.pos}")
-    
-    return document
     
 from sys import exit
 
 def main():
-    options = DocumentOptions(document_path)
-    options.set_options(documents)
+    options = DocumentOptions(document_path, documents)
 
-    selection = select_document(options)
+    selection = options.select_document()
 
     if selection:
         pass
