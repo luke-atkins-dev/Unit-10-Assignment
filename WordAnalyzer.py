@@ -1,19 +1,10 @@
-# You must create a class named WordAnalyzer.
-# __init__(self, filepath): The initializer should take the filepath (as a string) and store it as a private pathlibrary
-# Path object. It should also initialize a private dictionary to hold the word frequencies.
-# process_file(self): This method will contain the main logic. It must:
-
-# Use a try-except block to handle FileNotFoundError gracefully.
-# Use the pathlib.Path object's .exists() method to check for the file.
-# Use the pathlib.Path object's .open() method to read the file line by line.
-
-# Use string.punctuation to create a translation table to remove all punctuation from each line.
-# Convert each line to all lowercase.
-# Split each line into words and update their counts in the internal frequencies dictionary.
-# The method should return True if processing was successful and False if a FileNotFoundError occurred.
-# print_report(self): This method should print the results.
-# Get the keys from the frequencies dictionary and sort them alphabetically.
-# Print the word and its count in the specified format (see example).
+"""
+Name: WordAnalyzer.py
+Author: Luke Atkins
+Date: 3/24/2026
+Purpose: Handles counting words from a singular text file
+Starter Code: No starter code used.
+"""
 
 from pathlib import Path
 from string import punctuation
@@ -25,12 +16,38 @@ class WordAnalyzer():
     _translation = str.maketrans("", "", punctuation + '\n')
     DEFAULT_STOP_WORDS = ['']
     def __init__(self, filepath: str, stop_words:list=DEFAULT_STOP_WORDS):
+        """
+        Initialize
+
+        Args:
+            filepath: (str) path to the file represented as a string
+            stop_words: (list, optional) a list of word to not be counted in the final count
+        """
         self._word_frequencies = {}
         self._path = Path(filepath)
         self._stop_words = stop_words
     def get_word_frequency(self, word: str) -> int:
+        """
+        Returns how frequent a word is within the document once processed
+
+
+        Args:
+            word: (str) the word to check the count of
+
+        Returns:
+            int: the amount of occurences
+        """
         return self._word_frequencies.get(word)
     def count_word(self, word: str) -> None:
+        """
+        Counts a word within the internal dictionary
+
+        Args:
+            word: (str) word to be counted
+        
+        Returns:
+            None
+        """
         if word in self._stop_words:
             return
 
@@ -40,10 +57,37 @@ class WordAnalyzer():
         else:
             self._word_frequencies[word] = 1
     def _get_words(line: str) -> list[str]:
+        """
+        Strip the line of whitespace and punctuation
+
+        Args:
+            line: (str) the line to be processed
+        
+        Returns:
+            list[str]: the words from the line
+        """
         return line.lower().translate(WordAnalyzer._translation).strip().split(' ')
     def get_file_path(self) -> Path:
+        """
+        Returns the internal file path
+
+        Args:
+            None
+
+        Returns:
+            Path: the internal path
+        """
         return self._path
     def process_file(self) -> bool:
+        """
+        Processes the file and returns whether the operation was successful
+
+        Args:
+            None
+
+        Returns:
+            bool: Whether the operation was successful
+        """
         try:
             if not self._path.exists():
                 raise FileNotFoundError
@@ -57,6 +101,15 @@ class WordAnalyzer():
 
         return True
     def print_report(self) -> None:
+        """
+        Prints the word count within the document
+
+        Args:
+            None
+
+        Returns:
+            None
+        """
         keys = list(self._word_frequencies.keys())
         keys.sort()
 

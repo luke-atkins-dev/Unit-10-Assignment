@@ -20,8 +20,6 @@ documents = {
     "4": "file_4.txt"
 }
 
-from sys import exit
-
 def main():
     options = DocumentOptions(document_path, documents)
 
