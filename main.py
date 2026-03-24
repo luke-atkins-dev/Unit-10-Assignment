@@ -25,6 +25,8 @@ from sys import exit
 def main():
     options = DocumentOptions(document_path, documents)
 
+    print("Please select a file to analyze:")
+
     selection = options.select_document()
 
     if selection is None:
@@ -35,10 +37,13 @@ def main():
     )
     
     if analyzer.process_file():
+        print(f'\nProcessing {analyzer.get_file_path().stem}...\n')
         analyzer.print_report()
     else:
         print("Failed to analyze file")
     
+    input("\nPress enter to analyze another file...")
+    main()
 
 if __name__ == "__main__":
     main()

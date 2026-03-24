@@ -41,6 +41,8 @@ class WordAnalyzer():
             self._word_frequencies[word] = 1
     def _get_words(line: str) -> list[str]:
         return line.lower().translate(WordAnalyzer._translation).strip().split(' ')
+    def get_file_path(self) -> Path:
+        return self._path
     def process_file(self) -> bool:
         try:
             if not self._path.exists():
