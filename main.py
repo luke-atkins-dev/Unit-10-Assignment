@@ -103,8 +103,7 @@ def main():
     )
     
     if analyzer.process_file():
-        print("successfully file")
-        print(analyzer._word_frequencies)
+        analyzer.print_report()
     else:
         print("Failed to analyze file")
     

@@ -50,11 +50,19 @@ class WordAnalyzer():
 
         with self._path.open("r") as file:
             for line in file:
-                print(WordAnalyzer._get_words(line))
                 for word in WordAnalyzer._get_words(line):
                     self.count_word(word)
 
         return True
+    def print_report(self) -> None:
+        report = ""
+
+        keys = list(self._word_frequencies.keys())
+        keys.sort()
+
+        for word in keys:
+            count = self._word_frequencies[word]
+            print(f'{word:<20}:: {count}')
 
 
 
