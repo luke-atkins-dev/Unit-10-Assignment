@@ -96,7 +96,10 @@ def main():
         exit(1)
         return
 
-    analyzer = WordAnalyzer(selection.resolve())
+    analyzer = WordAnalyzer(
+        str(selection) # It would be better just to pass the path object, but for project requirements it needs to be a string
+    )
+    analyzer.process_file()
     
 
 if __name__ == "__main__":

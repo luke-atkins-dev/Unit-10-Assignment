@@ -2,6 +2,7 @@
 # __init__(self, filepath): The initializer should take the filepath (as a string) and store it as a private pathlibrary
 # Path object. It should also initialize a private dictionary to hold the word frequencies.
 # process_file(self): This method will contain the main logic. It must:
+
 # Use a try-except block to handle FileNotFoundError gracefully.
 # Use the pathlib.Path object's .exists() method to check for the file.
 # Use the pathlib.Path object's .open() method to read the file line by line.
@@ -19,6 +20,15 @@ class WordAnalyzer():
     def __init__(self, filepath: str):
         self._word_frequencies = {}
         self._path = Path(filepath)
+    def get_word_frequency(self, word: str):
+        return self._word_frequencies.get(word)
+    def count_word(self, word: str):
+        exists = self.get_word_frequency(word)
+        if exists:
+            self._word_frequencies[word] += 1
+        else:
+            self._word_frequencies[word] = 1
     def process_file(self):
-        self._path.read_text()
+        
+
 
