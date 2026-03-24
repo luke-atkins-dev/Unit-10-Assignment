@@ -49,7 +49,7 @@ class DocumentOptions:
         while document is None:
             str_option = input(f"Choose document: (1-{len(self.get_options())}): ")
 
-            if str_option == "quit":
+            if str_option.lower() == "exit":
                 break
 
             try:
@@ -83,6 +83,8 @@ class DocumentOptions:
         
         out += '\n'.join(option_strings)
         
+        out += 'Exit: (Close program)'
+
         return out
     
 from sys import exit

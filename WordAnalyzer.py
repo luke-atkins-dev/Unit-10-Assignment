@@ -6,6 +6,7 @@
 # Use a try-except block to handle FileNotFoundError gracefully.
 # Use the pathlib.Path object's .exists() method to check for the file.
 # Use the pathlib.Path object's .open() method to read the file line by line.
+
 # Use string.punctuation to create a translation table to remove all punctuation from each line.
 # Convert each line to all lowercase.
 # Split each line into words and update their counts in the internal frequencies dictionary.
@@ -15,6 +16,10 @@
 # Print the word and its count in the specified format (see example).
 
 from pathlib import Path
+from string import punctuation
+
+class AnalyzationFailedError(Exception):
+    pass
 
 class WordAnalyzer():
     def __init__(self, filepath: str):
@@ -29,6 +34,14 @@ class WordAnalyzer():
         else:
             self._word_frequencies[word] = 1
     def process_file(self):
-        
+        try:
+            if not self._path.exists():
+                raise FileNotFoundError
+        except FileNotFoundError:
+            raise AnalyzationFailedError("File path does not exist")
+
+        with self._path.open("r") as file:
+            pass
+
 
 
