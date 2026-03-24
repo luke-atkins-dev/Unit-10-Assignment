@@ -97,13 +97,18 @@ def select_document(options: DocumentOptions) -> Path:
     
     return document
     
-
+from sys import exit
 
 def main():
     options = DocumentOptions(document_path)
     options.set_options(documents)
 
     selection = select_document(options)
+
+    if selection:
+        pass
+    else:
+        exit(1)
     
 
 if __name__ == "__main__":
