@@ -5,6 +5,7 @@ Date: 3/24/2026
 Purpose: Counts number of words within specified documents
 Starter Code: No starter code used.
 """
+
 from pathlib import Path
 from WordAnalyzer import WordAnalyzer
 from DocumentOptions import DocumentOptions
@@ -14,10 +15,10 @@ project_dir = Path(__file__).resolve().parent
 document_path = project_dir / "documents"
 
 documents = {
-    "1": "file_1.txt",
-    "2": "file_2.txt",
-    "3": "file_3.txt",
-    "4": "file_4.txt"
+    "1": "monte_cristo.txt",
+    "2": "princess_mars.txt",
+    "3": "Tarzan.txt",
+    "4": "treasure_island.txt"
 }
 
 def main():
@@ -28,6 +29,8 @@ def main():
     selection = options.select_document()
 
     if selection is None:
+        # user has quit
+        print("Quitting...")
         return
 
     analyzer = WordAnalyzer(
