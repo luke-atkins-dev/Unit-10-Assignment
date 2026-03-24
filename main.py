@@ -96,7 +96,7 @@ def main():
         exit(1)
         return
 
-    
+    analyzer = WordAnalyzer(selection.resolve())
     
 
 if __name__ == "__main__":
