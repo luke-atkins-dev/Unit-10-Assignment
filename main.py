@@ -35,14 +35,26 @@ documents = {
     "4": "file_4.txt"
 }
 
+class InvalidDocumentSelectionError(Exception):
+    def __init__(self, invalid_selection_pos: int):
+        super().__init__(f"Invalid selection pos: {invalid_selection_pos}")
+        self.pos = invalid_selection_pos
+
 class DocumentOptions:
     def __init__(self, src_path: Path):
         self._options = {}
         self._src_path = src_path
     def set_options(self, options: dict[str: Path]):
         self._options = options
+    def get_option(self, pos: str):
+        opt = self._options.get(pos)
+        if opt:
+            return opt
+        else:
+            raise InvalidDocumentSelectionError(pos)
     def get_options(self):
         return {k:self._get_option_path(v) for k, v in self._options.items()}
+    # private
     def _get_option_path(self, option: str):
         return self._src_path / option
     def __repr_single_option(pos: int, path: Path):
@@ -60,11 +72,39 @@ class DocumentOptions:
         out += '\n'.join(option_strings)
         
         return out
+
+def select_document(options: DocumentOptions) -> Path:
+    print(options)
     
+    document = None
+
+    while document is None:
+        str_option = input(f"Choose document: (1-{len(options.get_options())}): ")
+
+        if str_option == "quit":
+            break
+
+        try:
+            if str_option.isalpha():
+                raise ValueError()
+            
+            document = options.get_option(str_option)
+            
+        except ValueError:
+            print("Only numerical input is allowed within the specified ranges")
+        except InvalidDocumentSelectionError as e:
+            print(f"No document exists at position: {e.pos}")
+    
+    return document
+    
+
+
 def main():
     options = DocumentOptions(document_path)
     options.set_options(documents)
-    print(options)
+
+    selection = select_document(options)
+    
 
 if __name__ == "__main__":
     main()
