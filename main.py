@@ -9,7 +9,8 @@ from pathlib import Path
 import string
 from WordAnalyzer import WordAnalyzer
 
-
+# this is here because cwd is not consistent and changes depending on where the file is executed
+project_dir = Path(__file__).resolve().parent
 
 def main():
     pass
