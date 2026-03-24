@@ -20,5 +20,5 @@ class WordAnalyzer():
         self._word_frequencies = {}
         self._path = Path(filepath)
     def process_file(self):
-        text = self.path.read_text()
-        print(text)
+        self._path.read_text()
+

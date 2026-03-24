@@ -92,10 +92,11 @@ def main():
 
     selection = options.select_document()
 
-    if selection:
-        pass
-    else:
+    if selection is None:
         exit(1)
+        return
+
+    
     
 
 if __name__ == "__main__":
