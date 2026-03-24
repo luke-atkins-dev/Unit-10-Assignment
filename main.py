@@ -6,6 +6,10 @@ Purpose: Counts number of words within specified documents
 Starter Code: No starter code used.
 """
 from pathlib import Path
+import string
+from WordAnalyzer import WordAnalyzer
+
+
 
 def main():
     pass
