@@ -13,19 +13,58 @@ from WordAnalyzer import WordAnalyzer
 project_dir = Path(__file__).resolve().parent
 document_path = project_dir / "documents"
 
-documents = {
-    "1": document_path / "file_1.txt",
-    "2": document_path / "file_2.txt",
-    "3": document_path / "file_3.txt",
-    "4": document_path / "file_4.txt"
-}
-
 def display_documents(options: dict[str: Path]):
     for pos, item in options.items():
         print(f"{pos}. {item.name()}")
 
-def main():
+def get_document_option() -> Path:
     pass
+
+# def verify_paths(document_options: dict[str: Path]):
+#     assert document_path.is_dir(), "Documents path does not exist! Please add a folder called 'documents' inside of the project directory"
+
+#     for pos, option in document_options.items():
+#         assert option.is_file(), f"{option.name()} at position {pos} is not a valid file!"
+    
+#     return True
+
+documents = {
+    "1": "file_1.txt",
+    "2": "file_2.txt",
+    "3": "file_3.txt",
+    "4": "file_4.txt"
+}
+
+class DocumentOptions:
+    def __init__(self, src_path: Path):
+        self._options = {}
+        self._src_path = src_path
+    def set_options(self, options: dict[str: Path]):
+        self._options = options
+    def get_options(self):
+        return {k:self._get_option_path(v) for k, v in self._options.items()}
+    def _get_option_path(self, option: str):
+        return self._src_path / option
+    def __repr_single_option(pos: int, path: Path):
+        return f"{pos}. {path.stem}"
+    def __repr__(self):
+        out = "Document Options:\n"
+        options = self.get_options()
+        option_strings = []
+
+        for pos, option_path in options.items():
+            option_strings.append(DocumentOptions.__repr_single_option(
+                pos, option_path
+            ))
+        
+        out += '\n'.join(option_strings)
+        
+        return out
+    
+def main():
+    options = DocumentOptions(document_path)
+    options.set_options(documents)
+    print(options)
 
 if __name__ == "__main__":
     main()
