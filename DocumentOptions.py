@@ -1,3 +1,6 @@
+
+from pathlib import Path
+
 class InvalidDocumentSelectionError(Exception):
     def __init__(self, invalid_selection_pos: int):
         super().__init__(f"Invalid selection pos: {invalid_selection_pos}")
@@ -25,15 +28,17 @@ class DocumentOptions:
         document = None
 
         while document is None:
-            str_option = input(f"Choose document: (1-{len(self.get_options())}): ")
-
-            if str_option.lower() == "exit":
-                break
+            print(self)
+            option_count = len(self.get_options())
+            str_option = input(f"Choose document: (1-{option_count+1}): ")
 
             try:
                 if str_option.isalpha():
                     raise ValueError()
                 
+                if str_option == str(option_count+1):
+                    break
+
                 document = self.get_option(str_option)
                 
             except ValueError:
@@ -48,7 +53,7 @@ class DocumentOptions:
     def _get_option_path(self, option: str):
         return self._src_path / option
     def __repr_single_option(pos: int, path: Path):
-        return f"{pos}. {path.stem}"
+        return f"{pos}. {path}"
     def __repr__(self):
         out = "Document Options:\n"
         options = self.get_options()
@@ -56,11 +61,15 @@ class DocumentOptions:
 
         for pos, option_path in options.items():
             option_strings.append(DocumentOptions.__repr_single_option(
-                pos, option_path
+                pos, option_path.stem
             ))
         
+        option_strings.append(
+            DocumentOptions.__repr_single_option(
+                str(len(options)+1), 'Exit'
+            )
+        )
+
         out += '\n'.join(option_strings)
-        
-        out += 'Exit: (Close program)'
 
         return out

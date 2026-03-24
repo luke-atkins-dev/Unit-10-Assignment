@@ -20,8 +20,6 @@ documents = {
     "4": "file_4.txt"
 }
 
-
-    
 from sys import exit
 
 def main():
@@ -30,7 +28,6 @@ def main():
     selection = options.select_document()
 
     if selection is None:
-        exit(1)
         return
 
     analyzer = WordAnalyzer(
