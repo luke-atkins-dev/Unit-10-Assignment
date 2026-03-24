@@ -55,8 +55,6 @@ class WordAnalyzer():
 
         return True
     def print_report(self) -> None:
-        report = ""
-
         keys = list(self._word_frequencies.keys())
         keys.sort()
 
